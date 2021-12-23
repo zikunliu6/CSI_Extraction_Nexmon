@@ -1,9 +1,12 @@
+gym
 absl-py
 jupyter
 seaborn
 numpy
 matplotlib
 tqdm
+torch
+torchvision
 paramiko
 dpkt
 pyqtgraph

@@ -70,7 +70,9 @@ def unpack_csi(payload, chip):
         # Scale CSI by RSSI factor.
         data = np.fft.fftshift(np.frombuffer(Hout, dtype=np.int32).astype(np.float32).view(np.complex64))
         data_subc = data[data_bins[nfft]]
-        scale_factor = np.sqrt((unpacked_csi["rssi"]+100)/np.sum(np.vdot(data_subc,data_subc)))
+        # scale_factor = np.sqrt((unpacked_csi["rssi"]+100)/np.sum(np.vdot(data_subc,data_subc)))
+        scale_factor = np.power(10, unpacked_csi['rssi']/20)/np.sqrt(np.sum(np.vdot(data_subc,data_subc)))*1000 # times 1000 to scale it into roughly 0~3
+
         unpacked_csi['data'] = data*scale_factor
 
 

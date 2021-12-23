@@ -1,3 +1,15 @@
+# import os
+# import sys
+# import time
+# import io
+# import struct
+# import ctypes
+# import dpkt
+# import numpy as np
+# import matplotlib
+# import matplotlib.pyplot as plt
+# import paramiko
+# from pathlib import Path
 from multiprocessing import Process, Queue
 from envs.utils.csi_reader import *
 from envs.utils.csi_params import *
@@ -44,6 +56,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.n_subc = get_subc(FLAGS.chan_spec)
         self.csi_last = 1
         self.csi_antenna = [np.ones(self.n_subc, dtype=complex) for i in range(3)]
+        self.rssi_antenna = [[] for i in range(3)]
         # Data feed.
         self.queue = queue 
 
@@ -93,7 +106,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Set timer.
         self.timer = QtCore.QTimer()
-        self.timer.setInterval(10)
+        self.timer.setInterval(1)
         self.timer.timeout.connect(self.update_plot_data)
         self.timer.start()
 
@@ -121,6 +134,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         print('Antenna:', core_idx, get_index(core_idx))
         self.csi_antenna[get_index(core_idx)] = csi_data
+        self.rssi_antenna[get_index(core_idx)] = new_csi["rssi"]
 
         # Get scaled CSI.
         x = subcarriers[n_subc][data_bins[n_subc]]
@@ -137,7 +151,11 @@ class MainWindow(QtWidgets.QMainWindow):
         # Update CSI Phase Ratio.
         y = np.unwrap(np.angle(self.csi_antenna[get_index(core_idx)]/self.csi_antenna[0]))
         # y = np.angle(csi_data)
-        np.save('./antenna.npy', self.csi_antenna)
+        if core_idx == len(self.cores)-1:
+            data_save = {}
+            data_save['csi'] = self.csi_antenna
+            data_save['RSSI'] = self.rssi_antenna
+            np.save('./csi.npy', data_save)
         self.csi_last = csi_data
         self.csi_lines_phase[core_idx][stream_idx].setData(x, y)
 
