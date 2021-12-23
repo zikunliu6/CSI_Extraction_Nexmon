@@ -1,0 +1,10 @@
+absl-py
+jupyter
+seaborn
+numpy
+matplotlib
+tqdm
+paramiko
+dpkt
+pyqtgraph
+pyqt5
