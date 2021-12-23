@@ -29,9 +29,37 @@ AP connects to a desktop/laptop through an Ethernet port. User device connects t
     - Exit ssh. 
 - Device that you want to get the CSI. I used a Samsung Phone.
 
+
+
 #### Install Nexmon
 
 ***
 
+- Download and extract [nexmon_compiled.zip](https://github.com/zikunliu6/CSI_Extraction_Nexmon/blob/main/nexmon_compiled.zip)
+  - This zip file contains the nexmon core firmware dhd.ko, nexutil, makecsiparams and tcpdump
+  - The original installation from official website doesn't support RSSI extraction which makes the CSI amplitude meaningless, but ours support.
+- Copy the contents to the `/jffs/` partition of your router: `scp ./nexmonster-rtac86u/* admin@<routers-ip>:/jffs/`
+- Make `nexutil`, `makecsiparams`, and `tcpdump` executable: `ssh admin@<routers-ip> "/bin/chmod +x /jffs/nexutil /jffs/mcp /jffs/tcpdump "`
 
 
+
+#### Run CSI Collection
+
+***
+
+- Setup parameters in `csi_live/plot_live.py` including router IP, device MAC, number of antennas, etc.
+
+  - Core_mask means the antenna index. Let's say you want to collect data from antenna 0 and 1, then it should be 0011, which is 3.
+  - Stream_mask is recommended to be 1.
+
+- Ping your device constantly:
+
+  ```
+  sudo ping -i 0.1 <your device ip address>
+  ```
+
+- Run `csi_live/plot_live.py` and you will get the real-time CSI collection like this:
+
+  ![](/home/zikunliu/Zikun/Nexmon_CSI/CSI_Extraction_Nexmon/demo.gif)
+
+  - Note that, the first column means the amplitude of the CSI, the second column means the phase ratio between itself and antenna number 0, the third column means the RSSI in dBm.
