@@ -60,6 +60,6 @@ AP connects to a desktop/laptop through an Ethernet port. User device connects t
 
 - Run `csi_live/plot_live.py` and you will get the real-time CSI collection like this:
 
-  ![](/home/zikunliu/Zikun/Nexmon_CSI/CSI_Extraction_Nexmon/demo.gif)
+  ![](./demo.gif)
 
   - Note that, the first column means the amplitude of the CSI, the second column means the phase ratio between itself and antenna number 0, the third column means the RSSI in dBm.
