@@ -38,7 +38,7 @@ AP connects to a desktop/laptop through an Ethernet port. User device connects t
 - Download and extract [nexmon_compiled.zip](https://github.com/zikunliu6/CSI_Extraction_Nexmon/blob/main/nexmon_compiled.zip)
   - This zip file contains the nexmon core firmware dhd.ko, nexutil, makecsiparams and tcpdump
   - The original installation from official website doesn't support RSSI extraction which makes the CSI amplitude meaningless, but ours support.
-- Copy the contents to the `/jffs/` partition of your router: `scp ./nexmonster-rtac86u/* admin@<routers-ip>:/jffs/`
+- Copy the contents to the `/jffs/` partition of your router: `scp ./nexmon_compiled/* admin@<routers-ip>:/jffs/`
 - Make `nexutil`, `makecsiparams`, and `tcpdump` executable: `ssh admin@<routers-ip> "/bin/chmod +x /jffs/nexutil /jffs/mcp /jffs/tcpdump "`
 
 
